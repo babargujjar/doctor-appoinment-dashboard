@@ -4,6 +4,24 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// datasource db {
+//   provider = "mongodb"
+//   url      = env("DATABASE_URL")
+// }
+
+
+// model user{
+//   id String @db.ObjectId @default(auto()) @map("_id") @id
+//   email String
+//   hashedPassword String
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,12 +31,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  username      String
+  email         String    @unique
+  hashedPassword      String
+  // image         String
+  createdAt     DateTime  @default(now())
+  emailVerified DateTime? @map("verifiedAt")
+  sessions      Session[]
 
-model user{
-  id String @db.ObjectId @default(auto()) @map("_id") @id
-  email String
-  hashedPassword String
+  @@map("user")
+}
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime @map("expiresAt")
+  user         User     @relation(fields: [userId], references: [id])
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String   @unique
+  expires    DateTime @map("expiresAt")
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
 }

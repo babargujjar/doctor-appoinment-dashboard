@@ -2,11 +2,16 @@ import { AuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import prismadb from "../libs/prismadb"
 import bcrypt from "bcrypt"
+import GoogleProvider from "next-auth/providers/google"
 
 
 export const authOptions : AuthOptions = {
     pages:{signIn:"/signin"},
     providers :[
+         GoogleProvider({
+    clientId: process.env.GOOGLE_CLIENT_ID!,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+  }),
         Credentials({
             name:"credentials",
             credentials:{
@@ -43,9 +48,37 @@ export const authOptions : AuthOptions = {
             },
         })
      ],
+     callbacks: {
+    async signIn({ account, profile }: any) {
+      if (account?.provider === "google") {
+        const existingUser = await prismadb.user.findUnique({
+          where: { email: profile?.email },
+        });
+        if (existingUser) {
+          console.log("User already exists:", existingUser);
+        } else {
+          try {
+            const newUser = await prismadb.user.create({
+              data: {
+                email: profile?.email,
+                hashedPassword: "", 
+                name: profile?.name,
+                username:profile?.email
+              },
+            });
+            console.log("User created:", newUser);
+          } catch (error) {
+            console.log("Error creating user:", error);
+          }
+        }
+      }
+      return true;
+    },
+  },
      secret : process.env.NEXTAUTH_SECRET,
      session:{
         strategy:'jwt'
      },
      debug: process.env.NODE_ENV !== "production"
 }
+
