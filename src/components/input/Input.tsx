@@ -6,6 +6,8 @@ interface inputProps {
   value?: string | number;
   type?: HTMLInputTypeAttribute;
   label?: String;
+  placeholder? :String | any;
+  name? :String | any;
 }
 
 const Input = ({
@@ -14,19 +16,20 @@ const Input = ({
   onChange,
   type = "text",
   label,
+  placeholder,
+  name
 }: inputProps) => {
   return (
     <div className="relative w-full lg:w-[30rem]">
       <input
         onChange={onChange}
+        name={name}
         value={value}
         type={type}
         disabled={disabled}
-        className="outline-none p-4 border-2 border-neutral-200 w-full rounded-md peer"
+        placeholder={placeholder}
+        className="text-[22px] font-medium border-b-2 w-[452px] outline-none placeholder-black border-[#828282] placeholder-shown:text-black"
       />
-      <label className="capitalize absolute top-0 left-3 scale-75 peer-focus-within:scale-100 peer-focus-within:-top-3 peer-focus-within:bg-white peer-focus-within:px-2 px-0 bg-transparent transition-all duration-200 ease-in-out">
-        {label}
-      </label>
     </div>
   );
 };

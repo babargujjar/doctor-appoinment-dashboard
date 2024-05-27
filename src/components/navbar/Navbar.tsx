@@ -1,12 +1,39 @@
-import React from "react";
+"use client"
+import React, { useEffect, useState } from "react";
 import logo from "../../assets/logo.svg";
 import Image from "next/image";
 import search from "../../assets/search.png"
 import vector from "../../assets/vector.png"
 import nitification from "../../assets/notification.png"
 import message from "../../assets/message.png"
+import { getSession } from "next-auth/react";
 
+
+interface userdata {
+  user:{
+    name:String,
+    email:String
+  }
+}
 const Navbar = () => {
+  const [user,setUser] = useState<userdata | null>()
+
+
+  useEffect(()=>{
+    const getData =async ()=>{
+      const userData = await getSession();
+      setUser(userData as userdata)
+    }
+    getData()
+  },[])
+
+const currentDate = () => {
+  const today = new Date();
+  const options = { day: "numeric", month: "long", year: "numeric" };
+  const formattedDate = today.toLocaleDateString("en-US", options as {});
+  return formattedDate;
+};
+  // console.log('user', user)
   return (
     <div className="w-full h-[92px] flex flex-row items-center bg-white border-2 border-[#E0E0E0]">
       <div className="w-[244px] h-[92px] border-r-2 flex justify-center items-center">
@@ -25,11 +52,11 @@ const Navbar = () => {
           />
         </div>
         <div className="text-[#000000] text-[16px] mr-[40px] text-right">
-          <h2 className="font-normal">Name</h2>
+          <h2 className="font-normal w-full">{user?.user.name}</h2>
           <h2 className="font-bold">Doctor Industry</h2>
         </div>
         <div className="border-2 border-[#E0E0E0] mr-[40px] rounded-[6px] py-1 px-2 flex justify-center items-center">
-          <p className="font-normal text-[16px] ">24,October 2022</p>
+          <p className="font-normal text-[16px] ">{currentDate()}</p>
         </div>
         <div className="flex flex-row gap-[33px] justify-center items-center ">
           <Image src={message} alt="" className="w-[25px]" />

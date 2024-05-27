@@ -51,6 +51,9 @@ export const authOptions : AuthOptions = {
      callbacks: {
     async signIn({ account, profile }: any) {
       if (account?.provider === "google") {
+        // if (profile?.email) {
+        //   return false; // Prompt user to choose account
+        // }
         const existingUser = await prismadb.user.findUnique({
           where: { email: profile?.email },
         });

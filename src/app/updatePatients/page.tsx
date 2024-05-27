@@ -3,12 +3,17 @@ import Navbar from "@/components/navbar/Navbar";
 import Sidebar from "@/components/sidebar/Sidebar";
 import Image from "next/image";
 import date from "../../assets/calendar.png";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
+
 
 const Page = () => {
+  
+const router = useRouter();
+
   const [formData, setFormData] = useState({
     foreName: "",
     sureName: "",
@@ -17,8 +22,26 @@ const Page = () => {
     diasease: "",
     note: "",
     phone: "",
-    status:"On Treatment"
+    status:""
   });
+  // setFormData(Data)
+
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+
+    const toggleDropdown = () => {
+      setDropdownOpen(!dropdownOpen);
+    };
+
+    const handleStatusChange = (status: string) => {
+      setFormData((prevState) => ({
+        ...prevState,
+        status: status,
+      }));
+      setDropdownOpen(false); 
+    };
+
+    const statusOptions = ["on treatment", "Awaiting surgery", "Recovered"];
+
 
   const handleChange = (e: { target: { name: any; value: any; }; }) => {
     const { name, value } = e.target;
@@ -57,6 +80,15 @@ const Page = () => {
   }
 
 
+      useEffect(() => {
+        // Retrieve patient data from query parameter in URL
+        const { patientData } = router.query;
+        if (patientData) {
+          const patient = JSON.parse(patientData as any);
+          setFormData(patient);
+        }
+      }, [router.query]);
+
 
   return (
      <div className="max-w-[1440px] mx-auto">
@@ -65,10 +97,10 @@ const Page = () => {
                 <Sidebar />
         <div className="px-[30px] ">
           <h2 className="text-[18px] font-normal text-[#1D1D1D] py-[14px]">
-            Patient Register {">"} Add patients
+            Patient Register {">"} Update patients
           </h2>
           <div className="border bg-white mb-[43px] flex justify-between w-[1139px] pl-[29px] pr-[62px] h-[74px] items-center">
-            <h2 className="font-medium text-[22px]">Add New Patients</h2>
+            <h2 className="font-medium text-[22px]">Update Patients</h2>
             <div className="flex gap-[15px]">
               <Link href={"/patients"}>
                 <button className="border-[#0000AC] border-2  text-[#0000AC] text-[16px] font-medium w-[77px] h-[41px] flex justify-center items-center">
@@ -79,11 +111,11 @@ const Page = () => {
                 onClick={submitData}
                 className="bg-[#0000AC] text-[#FFFFFF] text-[16px] font-medium w-[77px] h-[41px] flex justify-center items-center"
               >
-                Save
+                Update
               </button>
             </div>
           </div>
-          <div className="w-[783px] h-[735px] pl-[41px] pt-[58px] bg-white mx-auto">
+          <div className="w-[783px] h-[835px] pl-[41px] pt-[58px] bg-white mx-auto">
             <div className="grid grid-cols-4 mb-[24px]">
               <h2 className="col-span-1">Record Name</h2>
               <div className="col-span-3">
@@ -176,6 +208,30 @@ const Page = () => {
                 value={formData.phone}
                 onChange={handleChange}
               />
+            </div>
+            <div className="grid relative grid-cols-4 mb-[31px]">
+              <h2 className="col-span-1">Status</h2>
+              <input
+                className="col-span-3 border w-[415px] h-[44px] border-[#E0E0E0]"
+                type="text"
+                readOnly
+                name="status"
+                value={formData.status}
+                onClick={toggleDropdown}
+              />
+              {dropdownOpen && (
+                <div className="absolute w-[415px] z-10 bg-white border border-gray-300 mt-1">
+                  {statusOptions.map((option) => (
+                    <div
+                      key={option}
+                      className="cursor-pointer py-2 px-4 hover:bg-gray-200"
+                      onClick={() => handleStatusChange(option)}
+                    >
+                      {option}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
