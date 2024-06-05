@@ -38,6 +38,7 @@ export const POST = async (req: NextRequest) => {
   }
 };
 
+
 export const GET = async (req: NextRequest) => {
     try {
       const response = await prisma.appointment.findMany();
@@ -49,6 +50,7 @@ export const GET = async (req: NextRequest) => {
       await prisma.$disconnect();
     }
 };
+
 
 export const DELETE = async (req: NextRequest) => {
   try {

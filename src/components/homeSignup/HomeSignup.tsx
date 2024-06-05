@@ -1,8 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import React, { useState } from "react";
-import toast from "react-hot-toast";
 
 const HomeSignup = () => {
   const router = useRouter();

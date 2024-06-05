@@ -1,88 +1,10 @@
-"use client";
-import React, { useEffect, useState } from "react";
 import Input from "../input/Input";
-import toast from "react-hot-toast";
-import axios from "axios";
-import { signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import useRegisterForm from "@/hooks/useRegisterForm";
 
 const RegisterForm = () => {
-  useEffect(() => {
-    signOut({
-      redirect: false,
-    });
-  }, []);
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    name: "",
-    companyName: "",
-    industry: "",
-    employe: "",
-  });
-  const handler = (e: any) => {
-    e.preventDefault();
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-  const router = useRouter();
-
-  const register = async () => {
-    try {
-      if (
-        !formData.name ||
-        !formData.companyName ||
-        !formData.industry ||
-        !formData.employe ||
-        !formData.email ||
-        !formData.password
-      ) {
-        toast.error("Enter all fields");
-        return;
-      }
-
-      const email = formData.email;
-      const password = formData.password;
-      const name = formData.name
-      await axios.post("/api/register", {
-        email,
-        password
-      });
-// console.log('userData',formData)
-      const response = await axios.post("/api/submit", formData);
-      if (response.status == 200) {
-        toast.success("Register Successfully");
-        // console.log("Form data submitted successfully:", response.data);
-      } else {
-        toast.success("Error occur please try again");
-      }
-      router.push("/dashboard");
-
-      setFormData({
-        email: "",
-        password: "",
-        name: "",
-        companyName: "",
-        industry: "",
-        employe: "",
-      });
-
-      // await signIn("credentials",{
-      //     email,password,
-      //     redirect:false
-      // })
-      toast.success("User Register Successfully");
-    } catch (error: any) {
-      console.error(error);
-      // toast.error(error)
-      toast.error("failed to register");
-    }
-  };
+  const {handler,formData,register} = useRegisterForm()
 
   return (
     <div className="flex flex-col space-y-5 justify-center">

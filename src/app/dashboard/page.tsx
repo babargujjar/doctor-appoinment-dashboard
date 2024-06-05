@@ -1,5 +1,4 @@
-"use client";
-import React, { useEffect, useState } from "react";
+"use client"
 import Navbar from "@/components/navbar/Navbar";
 import Sidebar from "@/components/sidebar/Sidebar";
 import threeDots from "@/assets/more-horizontal.png";
@@ -9,50 +8,18 @@ import OfflineChart from "@/components/offlineChart/OfflineChart";
 import UpComingSchedule from "@/components/upComingSchedule/UpComingSchedule";
 import OnlineChart from "@/components/onlineChart/OnlineChart";
 import TotalPatientChart from "@/components/pieChart/pieChart";
-import { useAppDispatch, useAppSelector } from "@/store/storeHook";
-import { fetchAppointment } from "@/store/slices/appointments";
-import { fetchPatient } from "@/store/slices/patients";
-import { fetchUserData } from "@/store/slices/userSlice";
+import useDashboard from "@/hooks/useDashboard";
 
 const page = () => {
-  const [appointmentData, setAppointmentData] = useState<any>([]);
-  const [patients, setPatients] = useState<any>([]);
-  const dispatch = useAppDispatch();
 
-  const data = useAppSelector((state) => state.appointment.appointmentData);
-  useEffect(() => {
-    setAppointmentData(data);
-  }, [data]);
-  console.log("appointmentData", appointmentData);
-  useEffect(() => {
-    dispatch(fetchAppointment());
-  }, [dispatch]);
+const {
+  offlineConsaltaion,
+  onlineConsaltaion,
+  totalPatients,
+  patients,
+  appointmentData,
+} = useDashboard();
 
-  useEffect(() => {
-    dispatch(fetchUserData());
-  }, [dispatch]);
-
-  const patientsData = useAppSelector((state) => state.patients.patientData);
-  useEffect(() => {
-    setPatients(patientsData);
-  }, [patientsData]);
-
-  useEffect(() => {
-    dispatch(fetchPatient());
-  }, [dispatch]);
-  const totalPatients = patients.length;
-
-  const filteredOfflineAppointments = appointmentData?.filter(
-    (appointment: any) => !(appointment.consultationType === "Yes")
-  );
-  const offlineConsaltaion = filteredOfflineAppointments?.length;
-
-  const filteredOnlineAppointments = appointmentData?.filter(
-    (appointment: any) => !(appointment.consultationType === "No")
-  );
-  const onlineConsaltaion = filteredOnlineAppointments?.length;
-
-  const time = ["8:00", "9:00", "10:00", "11:00"];
   return (
     <div className="max-w-[1440px] mx-auto">
       <Navbar />

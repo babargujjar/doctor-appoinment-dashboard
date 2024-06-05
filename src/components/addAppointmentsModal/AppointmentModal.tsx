@@ -4,83 +4,22 @@ import man from "../../assets/man.png";
 import locationicon from "../../assets/location.png";
 import time from "../../assets/time.png";
 import notification from "../../assets/notification.png";
-import { useAppDispatch } from '@/store/storeHook';
-import { postAppointment } from '@/store/slices/appointments';
-import toast from 'react-hot-toast';
-
-const AppointmentModal = ({setModal}:any) => {
-const dispatch = useAppDispatch();
-
-const [formData, setFormData] = useState({
-  dateAndTime: "",
-  patient: "",
-  purposeOfVisit: "",
-  appointmentStatus: "",
-  duration: "",
-  appointmentType: "",
-  consultationType: "",
-});
+import useAddAppointmentModal from '@/hooks/useAddAppointmentModal';
+import { AppointmentModalProps } from '@/constants/types';
 
 
+const AppointmentModal: React.FC<AppointmentModalProps> = ({setModal}) => {
 
-    const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = event.target;
-      setFormData({ ...formData, [name]: value });
-    };
-
-    const handleStatusChange = (status: string) => {
-      setFormData((prevState) => ({
-        ...prevState,
-        appointmentStatus: status,
-      }));
-    };
-    const handleDurationChange = (duration: string) => {
-      setFormData((prevState) => ({
-        ...prevState,
-        duration: duration,
-      }));
-    };
-    const handleTypeChange = (type: string) => {
-      setFormData((prevState) => ({
-        ...prevState,
-        appointmentType: type,
-      }));
-    };
-    const handleconsultionChange = (type: string) => {
-      setFormData((prevState) => ({
-        ...prevState,
-        consultationType: type,
-      }));
-    };
-
-    const handleInputChange = (e: any) => {
-      const { name, value } = e.target;
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    };
-
-       const submitForm = async () => {
-         try {
-           await dispatch(postAppointment(formData));
-
-           setModal(false);
-
-           setFormData({
-             dateAndTime: "",
-             patient: "",
-             purposeOfVisit: "",
-             appointmentStatus: "",
-             duration: "",
-             appointmentType: "",
-             consultationType: "",
-           });
-         } catch (error) {
-           toast.error("Error Creating Appointment please try again");
-         }
-       };
-
+  const {
+    formData,
+    handleDateChange,
+    handleDurationChange,
+    handleInputChange,
+    handleStatusChange,
+    handleTypeChange,
+    handleconsultionChange,
+    submitForm,
+  } = useAddAppointmentModal();
 
   return (
     <div className="absolute top-0 flex justify-center items-center w-[1440px] h-[1426px] mx-auto bg-black bg-opacity-20 z-10">
@@ -262,7 +201,7 @@ const [formData, setFormData] = useState({
               <button
                 onClick={() => handleconsultionChange("Yes")}
                 className={` h-[44px] ${
-                  formData.consultationType === "Yes" ? "selected" :""
+                  formData.consultationType === "Yes" ? "selected" : ""
                 } rounded-md px-2 bg-[#FAFAFA] font-normal text-[16px] flex justify-center items-center`}
               >
                 Yes
@@ -270,7 +209,7 @@ const [formData, setFormData] = useState({
               <button
                 onClick={() => handleconsultionChange("No")}
                 className={`h-[44px] ${
-                  formData.consultationType === "No" ? "selected" :""
+                  formData.consultationType === "No" ? "selected" : ""
                 } text-[16px] px-2 rounded-md bg-[#FAFAFA]`}
               >
                 No
@@ -305,6 +244,6 @@ const [formData, setFormData] = useState({
       </div>
     </div>
   );
-}
+};
 
 export default AppointmentModal

@@ -1,82 +1,14 @@
 "use client";
-import { signIn, signOut } from "next-auth/react";
-import React, { useEffect, useState } from "react";
+import { signIn } from "next-auth/react";
 import Input from "../input/Input";
-import toast from "react-hot-toast";
 import Link from "next/link";
-import bcrypt from "bcrypt";
+import useLogin from "@/hooks/useLogin";
 
 
 const LoginForm = () => {
-  useEffect(() => {
-    signOut({
-      redirect: false,
-    });
-  }, []);
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const login = async () => {
-    try {
-      if (
-        !email ||
-        !password
-      ) {
-        toast.error("Enter all fields");
-        return;
-      }
-      const loginResult = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-      console.log('loginResult', loginResult)
-      if (loginResult?.ok) {
-        toast.success("User Login Successfully");
-        window.location.assign("/dashboard");
-      } else if (loginResult?.status === 401) {
-        toast.error("Invalid Email or Password");
-      }
-    } catch (error: any) {
-      console.error(error);
-      toast.error("Failed to login");
-    }
-  };
-  // const login = async () => {
-  //   try {
-  //     if (!email || !password) {
-  //       toast.error("Enter all fields");
-  //       return;
-  //     }
-
-  //     const user = await prisma.user.findMany({
-  //       where: {
-  //         email,
-  //       },
-  //     });
-
-  //     if (user.length === 0) {
-  //       toast.error("No user found");
-  //       return;
-  //     }
-
-  //     const validUser = user.find((u) =>
-  //       bcrypt.compareSync(password, u.hashedPassword)
-  //     );
-
-  //     if (validUser) {
-  //       toast.success("User Login Successfully");
-  //       window.location.assign("/dashboard");
-  //     } else {
-  //       toast.error("Invalid Email or Password");
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     toast.error("Failed to login");
-  //   }
-  // };
-
+ 
+  const { setEmail, email, setPassword, password, login } = useLogin()
+ 
   return (
     <div className="flex flex-col space-y-5 justify-center">
       <div className="h-[68px] mb-[10px]">

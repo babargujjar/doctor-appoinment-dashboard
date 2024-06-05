@@ -3,66 +3,18 @@ import Navbar from "@/components/navbar/Navbar";
 import Sidebar from "@/components/sidebar/Sidebar";
 import Image from "next/image";
 import date from "../../assets/calendar.png";
-import React, { useState } from "react";
 import Link from "next/link";
-import axios from "axios";
-import toast from "react-hot-toast";
+import useAddPatients from "@/hooks/useAddPatients";
 
 const Page = () => {
-  const [formData, setFormData] = useState({
-    foreName: "",
-    sureName: "",
-    dateBirth: "",
-    gender: "",
-    diasease: "",
-    note: "",
-    phone: "",
-    status:"On Treatment"
-  });
-
-  const handleChange = (e: { target: { name: any; value: any; }; }) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleGenderChange = (gender: string) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      gender: gender,
-    }));
-  };
-
-  const submitData =async (e: { preventDefault: () => void; })=>{
-    e.preventDefault();
-    if (
-      formData.foreName &&
-      formData.sureName &&
-      formData.dateBirth &&
-      formData.gender &&
-      formData.diasease &&
-      formData.note &&
-      formData.phone &&
-      formData.status
-    ) {
-      const response = await axios.post("/api/addPatients", formData);
-      // console.log('response', response)
-      toast.success("Patient added successfully!");
-    } else {
-      // Show toast message if any field is missing
-      alert("All fields are required!");
-    }
-  }
-
-
+  const { handleGenderChange, handleChange, submitData, formData } =
+    useAddPatients();
 
   return (
-     <div className="max-w-[1440px] mx-auto">
-              <Navbar />
-              <div className="flex flex-row bg-[#F9F9F9]">
-                <Sidebar />
+    <div className="max-w-[1440px] mx-auto">
+      <Navbar />
+      <div className="flex flex-row bg-[#F9F9F9]">
+        <Sidebar />
         <div className="px-[30px] ">
           <h2 className="text-[18px] font-normal text-[#1D1D1D] py-[14px]">
             Patient Register {">"} Add patients
@@ -179,8 +131,8 @@ const Page = () => {
             </div>
           </div>
         </div>
-        </div>
-        </div>
+      </div>
+    </div>
   );
 };
 

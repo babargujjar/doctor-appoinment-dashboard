@@ -6,34 +6,14 @@ import search from "../../assets/search.png"
 import vector from "../../assets/vector.png"
 import nitification from "../../assets/notification.png"
 import message from "../../assets/message.png"
-import { getSession } from "next-auth/react";
+import { getSession, signOut } from "next-auth/react";
+import toast from "react-hot-toast";
+import useNavbar from "@/hooks/useNavbar";
 
 
-interface userdata {
-  user:{
-    name:String,
-    email:String
-  }
-}
 const Navbar = () => {
-  const [user,setUser] = useState<userdata | null>()
 
-
-  useEffect(()=>{
-    const getData =async ()=>{
-      const userData = await getSession();
-      setUser(userData as userdata)
-    }
-    getData()
-  },[])
-
-const currentDate = () => {
-  const today = new Date();
-  const options = { day: "numeric", month: "long", year: "numeric" };
-  const formattedDate = today.toLocaleDateString("en-US", options as {});
-  return formattedDate;
-};
-  // console.log('user', user)
+  const {logout,user,currentDate} = useNavbar()
   return (
     <div className="w-full h-[92px] flex flex-row items-center bg-white border-2 border-[#E0E0E0]">
       <div className="w-[244px] h-[92px] border-r-2 flex justify-center items-center">
@@ -61,7 +41,12 @@ const currentDate = () => {
         <div className="flex flex-row gap-[33px] justify-center items-center ">
           <Image src={message} alt="" className="w-[25px]" />
           <Image src={nitification} alt="" className="w-[22px]" />
-          <Image src={vector} alt="" className="w-[26px]" />
+          <Image
+            onClick={logout}
+            src={vector}
+            alt=""
+            className="w-[26px] cursor-pointer"
+          />
         </div>
       </div>
     </div>

@@ -1,100 +1,31 @@
-"use client"
+"use client";
 import Navbar from "@/components/navbar/Navbar";
 import Sidebar from "@/components/sidebar/Sidebar";
 import Image from "next/image";
 import date from "../../assets/calendar.png";
-import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { useRouter } from "next/router";
+import useUpdatePatient from "@/hooks/useUpdatePatient";
 
 
 const Page = () => {
+
+  const {
+    handleChange,
+    handleGenderChange,
+    handleStatusChange,
+    submitData,
+    formData,
+    statusOptions,
+    dropdownOpen,
+    toggleDropdown
+  } = useUpdatePatient();
+
   
-const router = useRouter();
-
-  const [formData, setFormData] = useState({
-    foreName: "",
-    sureName: "",
-    dateBirth: "",
-    gender: "",
-    diasease: "",
-    note: "",
-    phone: "",
-    status:""
-  });
-  // setFormData(Data)
-
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-
-    const toggleDropdown = () => {
-      setDropdownOpen(!dropdownOpen);
-    };
-
-    const handleStatusChange = (status: string) => {
-      setFormData((prevState) => ({
-        ...prevState,
-        status: status,
-      }));
-      setDropdownOpen(false); 
-    };
-
-    const statusOptions = ["on treatment", "Awaiting surgery", "Recovered"];
-
-
-  const handleChange = (e: { target: { name: any; value: any; }; }) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleGenderChange = (gender: string) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      gender: gender,
-    }));
-  };
-
-  const submitData =async (e: { preventDefault: () => void; })=>{
-    e.preventDefault();
-    if (
-      formData.foreName &&
-      formData.sureName &&
-      formData.dateBirth &&
-      formData.gender &&
-      formData.diasease &&
-      formData.note &&
-      formData.phone &&
-      formData.status
-    ) {
-      const response = await axios.post("/api/addPatients", formData);
-      // console.log('response', response)
-      toast.success("Patient added successfully!");
-    } else {
-      // Show toast message if any field is missing
-      alert("All fields are required!");
-    }
-  }
-
-
-      useEffect(() => {
-        // Retrieve patient data from query parameter in URL
-        const { patientData } = router.query;
-        if (patientData) {
-          const patient = JSON.parse(patientData as any);
-          setFormData(patient);
-        }
-      }, [router.query]);
-
-
   return (
-     <div className="max-w-[1440px] mx-auto">
-              <Navbar />
-              <div className="flex flex-row bg-[#F9F9F9]">
-                <Sidebar />
+    <div className="max-w-[1440px] mx-auto">
+      <Navbar />
+      <div className="flex flex-row bg-[#F9F9F9]">
+        <Sidebar />
         <div className="px-[30px] ">
           <h2 className="text-[18px] font-normal text-[#1D1D1D] py-[14px]">
             Patient Register {">"} Update patients
@@ -235,8 +166,8 @@ const router = useRouter();
             </div>
           </div>
         </div>
-        </div>
-        </div>
+      </div>
+    </div>
   );
 };
 

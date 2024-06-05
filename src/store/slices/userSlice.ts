@@ -1,19 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch } from "../store";
 import axios from "axios";
+import { UserData, UserState } from "@/constants/types";
 
-export interface UserData {
-  id: string;
-  createdAt: string;
-  hashedPassword: string;
-  email: string;
-}
-
-export interface UserState {
-  userData: UserData | null;
-  loading: boolean;
-  error: string | null;
-}
 
 const initialState: UserState = {
   userData: null,
@@ -33,6 +22,7 @@ export const fetchUserData = createAsyncThunk(
     }
   }
 );
+
 
 const userSlice = createSlice({
   name: "user",

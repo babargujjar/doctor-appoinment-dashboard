@@ -3,114 +3,19 @@ import Navbar from "@/components/navbar/Navbar";
 import Sidebar from "@/components/sidebar/Sidebar";
 import Image from "next/image";
 import icon from "../../assets/settingpage.png";
-import React, { useEffect, useState } from "react";
-// import { getServerSession } from "next-auth";
-import { useSession } from "next-auth/react";
-import axios from "axios";
-import { useAppDispatch, useAppSelector } from "@/store/storeHook";
-import { fetchUserData } from "@/store/slices/userSlice";
-import { UserData } from "@prisma/client";
+import useSettings from "@/hooks/useSettings";
 
 const Page = () => {
-  // useEffect(() =>{
-  //   const fetchSession = async () => {
-  //     const sessionData = await getServerSession();
-  //     console.log("session", sessionData?.user);
-  //   };
-
-  //   fetchSession();
-  // }, []);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [hashedPassworddd, setHashedPassworddd] = useState();
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const dispatch = useAppDispatch();
-  const userData = useAppSelector((state) => state.user.userData);
-
-  // useEffect(() => {
-  //   const handleGetUser = async () => {
-  //     try {
-  //       const response = await fetch("/api/getSingleUser", {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
-
-  //       if (response.status === 401) {
-  //         console.log("Unauthorized");
-  //       } else if (response.status === 200) {
-  //         const data = await response.json();
-  //         console.log("User data:", data);
-  //         setHashedPassword(data.hashedPassword);
-  //       } else {
-  //         console.log("Unknown error occurred");
-  //       }
-  //     } catch (err) {
-  //       console.error("Error fetching user data:", err);
-  //     }
-  //   };
-
-  //   handleGetUser();
-  // }, []);
-
-  useEffect(() => {
-    dispatch(fetchUserData());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (userData?.hashedPassword) {
-      setFormData((prevState) => ({
-        ...prevState,
-        hashedPassword: userData.hashedPassword,
-      }));
-    }
-  }, [userData]);
-
-  // console.log("redux data ", userData);
-
-  const [formData, setFormData] = useState({
-    oldPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-    hashedPassword: "",
-  });
-  // console.log('hashedPassword', userData?.hashedPassword)
-
-  const handleIconClick = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleChangePassword = async () => {
-    try {
-      const response = await axios.put("/api/reset", formData);
-      console.log("User password updated:", response.data);
-      console.log("Password Reset Successfull", "success");
-      dispatch(fetchUserData());
-    } catch (error) {
-      console.error("Error updating user password:", error);
-      console.log("Error in Reset Password", "error");
-    }
-  };
-
-  const handleChangePasswordClick = () => {
-    setIsModalOpen(true);
-    setIsDropdownOpen(false);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  const {
+    handleChange,
+    handleChangePassword,
+    handleChangePasswordClick,
+    handleCloseModal,
+    handleIconClick,
+    formData,
+    isDropdownOpen,
+    isModalOpen,
+  } = useSettings();
 
   return (
     <div className="max-w-[1440px] mx-auto">

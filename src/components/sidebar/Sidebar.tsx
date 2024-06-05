@@ -15,43 +15,11 @@ import setting from "../../assets/setting.png";
 import settingBlue from "@/assets/settingblue.png"
 import support from "../../assets/support.png";
 import Link from "next/link";
+import useSideBar from "@/hooks/useSideBar";
 
 const Sidebar = () => {
-  const [selectedItem, setSelectedItem] = useState<string>("Dashboard");
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const selectedItemParam = params.get("selectedItem");
-      const pathname = window.location.pathname;
-
-      if (selectedItemParam) {
-        setSelectedItem(selectedItemParam);
-      } else {
-        if (pathname.includes("dashboard")) {
-          setSelectedItem("Dashboard");
-        } else if (pathname.includes("schedule")) {
-          setSelectedItem("Schedule");
-        } else if (pathname.includes("patients")) {
-          setSelectedItem("Patients");
-        } else if (pathname.includes("setting")) {
-          setSelectedItem("Setting");
-        }
-      }
-    }
-  }, [typeof window !== "undefined" ? window.location.search : undefined]);
-
-  const handleItemClick = (itemName: string) => {
-    setSelectedItem(itemName);
-    if (window.innerWidth <= 768) {
-      // handleToggleSidebar();
-    }
-  };
-
-  // const handleLogout = async () => {
-  //   await signOut({ redirect: false });
-  //   window.location.href = "/login";
-  // };
+  
+const {handleItemClick,selectedItem} = useSideBar()
 
 
   return (

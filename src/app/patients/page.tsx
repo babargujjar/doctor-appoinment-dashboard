@@ -1,5 +1,4 @@
-"use client";
-import React, { useEffect, useState } from "react";
+"use client"
 import Navbar from "@/components/navbar/Navbar";
 import Sidebar from "@/components/sidebar/Sidebar";
 import Image from "next/image";
@@ -11,61 +10,20 @@ import more from "../../assets/more.png";
 import Link from "next/link";
 import edit from "@/assets/edit.png";
 import trash from "@/assets/trash.png";
-import { useRouter } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/store/storeHook";
-import { deletePatient, fetchPatient } from "@/store/slices/patients";
+import usePatients from "@/hooks/usePatients";
 
-interface Patient {
-  foreName: string;
-  sureName: string;
-  diasease: string;
-  status: string;
-  id: string;
-}
+
 
 const page = () => {
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-  const [patients, setPatients] = useState<Patient[]>([]);
-  const [showOptions, setShowOptions] = useState<boolean>(false);
-  const [selectedPatientIndex, setSelectedPatientIndex] = useState<
-    number | null
-  >(null);
-  const data = useAppSelector((state) => state.patients.patientData);
-  const totalPatients = data.length;
-
-  useEffect(() => {
-    setPatients(data);
-  }, [data]);
-
-  useEffect(() => {
-    dispatch(fetchPatient());
-  }, [dispatch]);
-
-  const toggleOptions = (index: number) => {
-    if (selectedPatientIndex === index) {
-      setSelectedPatientIndex(null);
-      setShowOptions(false);
-    } else {
-      setSelectedPatientIndex(index);
-      setShowOptions(true);
-    }
-  };
-
-  const deletePatients = async (id: string) => {
-    await dispatch(deletePatient(id));
-  };
-
-  const handleNavigate = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    patient: Patient
-  ) => {
-    e.preventDefault();
-    const patientData = JSON.stringify(patient);
-    router.push(
-      `/updatePatients?patientData=${encodeURIComponent(patientData)}`
-    );
-  };
+ 
+  const {
+    totalPatients,
+    patients,
+    selectedPatientIndex,
+    toggleOptions,
+    deletePatients,
+    handleNavigate,
+  } = usePatients();
 
   return (
     <div className="max-w-[1440px] mx-auto">

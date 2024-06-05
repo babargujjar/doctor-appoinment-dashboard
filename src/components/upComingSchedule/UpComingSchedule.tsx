@@ -1,6 +1,4 @@
-"use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
 import graydot from "@/assets/graydot.png";
 import dropdoen from "@/assets/dropdown.png";
 import user from "@/assets/newuser.png";
@@ -8,55 +6,12 @@ import edit from "@/assets/edit.png";
 import plusicon from "@/assets/blueplus.png";
 import trash from "@/assets/trash.png";
 import blackdot from "@/assets/blackdot.png";
-import { useAppDispatch, useAppSelector } from "@/store/storeHook";
-import { fetchAppointment } from "@/store/slices/appointments";
+import useUpComingSchedule from "@/hooks/useUpComingSchedule";
+import { Appointment } from "@/constants/types";
 
 const UpComingSchedule = () => {
-  const today = new Date();
-  const timeSlot = ["8:00", "9:00", "10:00", "11:00"];
-  const dispatch = useAppDispatch();
-  const [appointments, setAppointment] = useState<any>([]);
-  const [todaysAppointments, setTodaysAppointments] = useState<any>([]);
-   const [selectedAppointment, setSelectedAppointment] = useState<
-     string | null
-   >(null);
-
-  const data = useAppSelector((state) => state.appointment.appointmentData);
-
-  useEffect(() => {
-    setAppointment(data);
-  }, [data]);
-
-  useEffect(() => {
-    dispatch(fetchAppointment());
-  }, [dispatch]);
-
-  useEffect(() => {
-    const todayAppointments = appointments?.filter((appointment: any) => {
-      const appointmentDate = new Date(appointment.dateAndTime);
-      return (
-        appointmentDate.getFullYear() === today.getFullYear() &&
-        appointmentDate.getMonth() === today.getMonth() &&
-        appointmentDate.getDate() === today.getDate()
-      );
-    });
-    setTodaysAppointments(todayAppointments);
-  }, [appointments, today]);
-
-  const getAppointmentsForTimeSlot = (slot: string) => {
-    const slotHour = parseInt(slot.split(":")[0], 10);
-    return todaysAppointments.filter((appointment: any) => {
-      const appointmentDate = new Date(appointment.dateAndTime);
-      const appointmentHour = appointmentDate.getHours();
-      return appointmentHour === slotHour;
-    });
-  };
-
-   const handleAppointmentClick = (appointmentId: string) => {
-     setSelectedAppointment(
-       appointmentId === selectedAppointment ? null : appointmentId
-     );
-   };
+  
+  const {timeSlot,getAppointmentsForTimeSlot,selectedAppointment,handleAppointmentClick} = useUpComingSchedule()
 
   return (
     <div className="bg-[#FFFFFF] overflow-hidden mt-5 max-w-[384px] w-full py-5 px-4 rounded-md">
@@ -85,7 +40,7 @@ const UpComingSchedule = () => {
                   />
                 </div>
                 {getAppointmentsForTimeSlot(time).map(
-                  (appointment: any, index: number) => (
+                  (appointment: Appointment, index: number) => (
                     <div key={index} className="flex flex-col">
                       <div
                         className={`flex py-2 rounded-md justify-between my-[10px] pl-2 ml-4 w-full items-center ${

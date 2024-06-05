@@ -1,28 +1,28 @@
 import instance from "@/utilites/Instance";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { NextRequest, NextResponse } from "next/server";
 import toast from "react-hot-toast";
 
 const initialState = {
   appointmentData: [],
   isLoading: false,
 };
+
 export const fetchAppointment = createAsyncThunk(
   "appointment/getappointments",
   async () => {
     try {
       const res = await instance.get(`/api/appointments`);
-      //   console.log('res', res)
       const result = await res.data;
       return result.response;
     } catch (error) {
-      // console.log("error", error);
+      console.log("error", error);
     }
   }
 );
+
 export const postAppointment = createAsyncThunk(
   "appointment/postappointments",
-  async (formData:any) => {
+  async (formData: any) => {
     if (
       !formData.dateAndTime ||
       !formData.patient ||
@@ -36,10 +36,8 @@ export const postAppointment = createAsyncThunk(
       return;
     }
     try {
-      const res = await instance.post("/api/appointments",formData);
-        // console.log('res', res)
-        toast.success("Appointment added successfully!")
-     
+      await instance.post("/api/appointments", formData);
+      toast.success("Appointment added successfully!");
     } catch (error) {
       console.log("error", error);
       toast.success("failed to add appointment");
@@ -52,7 +50,6 @@ export const deleteappointment = createAsyncThunk(
   async (id: string) => {
     try {
       await instance.delete("/api/addPatients", { data: { id: id } });
-      // NextResponse({status:200,message:"okay"})
       return id;
     } catch (error) {
       console.error("Error deleting patient:", error);

@@ -1,6 +1,3 @@
-import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-import { IncomingMessage } from "http";
 import { getServerSession } from "next-auth";
 import prismadb from "../../../../libs/prismadb";
 
@@ -12,8 +9,6 @@ export async function GET(req: Request) {
     }
 
     const userEmail = session?.user?.email;
-
-    console.log("userEmail", userEmail);
 
     if (!userEmail) {
       return new Response("User email not found", { status: 400 });
