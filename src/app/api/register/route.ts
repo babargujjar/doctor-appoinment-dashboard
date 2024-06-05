@@ -7,9 +7,6 @@ export async function POST(req:Request) {
         const body = await req.json()
 
         const {email,password} = body
-        if(!email || !password){
-            return new NextResponse("Missing data", {status: 500})
-        }
 
         const userAlreadyExist = await prismadb.user.findFirst({
             where:{
@@ -17,7 +14,7 @@ export async function POST(req:Request) {
             }
         })
 
-        if(userAlreadyExist?._id){
+        if(userAlreadyExist?.id){
             return new NextResponse("User Already Existed", {status: 500})
         }
 

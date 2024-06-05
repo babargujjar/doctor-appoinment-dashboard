@@ -1,21 +1,13 @@
-import { getServerSession } from "next-auth";
-import React from "react";
-import { authOptions } from "../../libs/AuthOptions";
-import { redirect } from "next/navigation";
+"use client"
+import { useEffect } from "react";
 
-interface ProtectedRoutLayoutProps {
-  children: React.ReactNode;
+const page =()=> {
+
+  useEffect(() => {
+     window.location.assign("/dashboard");
+  }, []);
+
+  // You can return null or any loading indicator while the redirect happens
+  return null;
 }
-
-export default async function ProtectedRoutLayout({
-  children,
-}: ProtectedRoutLayoutProps) {
-  const session = await getServerSession(authOptions);
-
-  if (!session?.user?.email) {
-    redirect("/signin");
-  }
-
-  return <main>{children}</main>;
-}
-
+export default page;
