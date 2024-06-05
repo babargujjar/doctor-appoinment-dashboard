@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import React, { useState } from 'react'
 import man from "../../assets/man.png";
 import locationicon from "../../assets/location.png";
 import time from "../../assets/time.png";
