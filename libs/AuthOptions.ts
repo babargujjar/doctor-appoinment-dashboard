@@ -34,12 +34,18 @@ export const authOptions : AuthOptions = {
                     throw new Error("Invalid Credentials")
                 }
 
+                 if (!user || !user.id || !user.hashedPassword) {
+                   return null; 
+                 }
+
                 // const currentHashedPassword = await bcrypt.hash(credentials.password,12)
 
                 const comparepassword = await bcrypt.compare(credentials.password,user.hashedPassword)
                 
-                if(comparepassword){
-                  return user
+                if (comparepassword) {
+                  return user;
+                } else {
+                  return null; // Return null instead of undefined
                 }
                 // if(currentHashedPassword !== user.hashedPassword){
                 //      throw new Error("Invalid Credential")

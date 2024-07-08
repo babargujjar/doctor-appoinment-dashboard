@@ -18,13 +18,16 @@ const useOfflineChart = ({ appointmentData }:any) => {
 
   // console.log('filteredAppointments', filteredAppointments)
   const countAppointmentsByDay = (appointments: AppointmentDataType[]) => {
-    const appointmentCounts = appointments?.reduce((acc, appointment) => {
-      const date = new Date(appointment.dateAndTime).toLocaleDateString();
-      acc[date] = (acc[date] || 0) + 1;
-      return acc;
-    }, {});
+    const appointmentCounts = appointments?.reduce(
+      (acc: Record<string, number>, appointment) => {
+        const date = new Date(appointment.dateAndTime).toLocaleDateString();
+        acc[date] = (acc[date] || 0) + 1;
+        return acc;
+      },
+      {}
+    );
     return Object.entries(appointmentCounts).map(([date, count]) => ({
-      x: date,
+      x: new Date(date),
       y: count,
     }));
   };

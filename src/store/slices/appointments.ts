@@ -1,8 +1,14 @@
+import { Appointments } from "@/constants/types";
 import instance from "@/utilites/Instance";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 
-const initialState = {
+
+interface AppointmentState {
+  appointmentData: Appointments[];
+  isLoading: boolean;
+}
+const initialState:AppointmentState = {
   appointmentData: [],
   isLoading: false,
 };

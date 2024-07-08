@@ -30,6 +30,19 @@ export type Patient = {
   createdAT: string;
 }
 
+
+
+export type Appointments = {
+  id: string;
+  dateAndTime: string;
+  patient: string;
+  purposeOfVisit: string;
+  appointmentStatus: string;
+  duration: string;
+  appointmentType: string;
+  consultationType: string;
+}
+
 export type TotalPatientChartProps = {
   patients: Patient[];
 }

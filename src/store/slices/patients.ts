@@ -1,7 +1,16 @@
+import { Patient } from "@/constants/types";
 import instance from "@/utilites/Instance";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+
+
+interface PatientState {
+  patientData: Patient[];
+  isLoading: boolean;
+}
+
+
+const initialState: PatientState = {
   patientData: [],
   isLoading: false,
 };
