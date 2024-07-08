@@ -114,7 +114,6 @@ const page = () => {
                           {selectedPatientIndex === index && (
                             <div className="absolute top-5 p-[6px] border">
                               <div
-                                onClick={(e) => handleNavigate(e, patient)}
                                 className="flex gap-2 cursor-pointer"
                               >
                                 <Image

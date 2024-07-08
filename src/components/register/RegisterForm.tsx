@@ -1,3 +1,4 @@
+"use client"
 import Input from "../input/Input";
 import Link from "next/link";
 import useRegisterForm from "@/hooks/useRegisterForm";

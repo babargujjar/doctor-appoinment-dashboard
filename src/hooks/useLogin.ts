@@ -5,8 +5,8 @@ import toast from 'react-hot-toast';
 
 const useLogin = () => {
 
-     const [email, setEmail] = useState("");
-     const [password, setPassword] = useState("");
+     const [email, setEmail] = useState("demo@gmail.com");
+     const [password, setPassword] = useState("123456789");
 
      const login = async () => {
        try {
@@ -19,7 +19,7 @@ const useLogin = () => {
            password,
            redirect: false,
          });
-         console.log("loginResult", loginResult);
+        //  console.log("loginResult", loginResult);
          if (loginResult?.ok) {
            toast.success("User Login Successfully");
            window.location.assign("/dashboard");

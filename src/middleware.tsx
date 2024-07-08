@@ -6,5 +6,5 @@ export default withAuth(function middleware(request: NextRequest) {}, {
 });
 
 export const config = {
-  matcher: ["/", "/addpatients", "/dashboard", "/home","/patients","/schedule","/settings"],
+  matcher: ["/","/signup", "/addpatients", "/dashboard", "/home","/patients","/schedule","/settings"],
 };

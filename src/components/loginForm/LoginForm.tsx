@@ -45,12 +45,12 @@ const LoginForm = () => {
       >
         Google SignIn
       </button>
-      <div className="text-center text-sm mt-5 text-neutral-500">
+      {/* <div className="text-center text-sm mt-5 text-neutral-500">
         Does't have an account?{" "}
         <Link href={"/signup"} className="font-bold text-[#0000AC]">
           Register{" "}
         </Link>{" "}
-      </div>
+      </div> */}
     </div>
   );
 };
