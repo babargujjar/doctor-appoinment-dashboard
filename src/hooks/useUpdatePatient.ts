@@ -1,11 +1,11 @@
-"use client";
+// "use client";
 import axios from "axios";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const useUpdatePatient = () => {
-  const router = useRouter();
+  // const router = useRouter();
 
   const [formData, setFormData] = useState({
     foreName: "",
@@ -68,13 +68,13 @@ const useUpdatePatient = () => {
     }
   };
 
-  useEffect(() => {
-    const { patientData } = router.query;
-    if (patientData) {
-      const patient = JSON.parse(patientData as any);
-      setFormData(patient);
-    }
-  }, [router.query]);
+  // useEffect(() => {
+  //   const { patientData } = router.query;
+  //   if (patientData) {
+  //     const patient = JSON.parse(patientData as any);
+  //     setFormData(patient);
+  //   }
+  // }, [router.query]);
 
   return {
     handleChange,

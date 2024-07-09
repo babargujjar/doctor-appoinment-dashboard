@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import Navbar from "@/components/navbar/Navbar";
 import Sidebar from "@/components/sidebar/Sidebar";
 import Image from "next/image";
