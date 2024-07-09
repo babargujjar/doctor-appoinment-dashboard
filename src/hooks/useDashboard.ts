@@ -16,13 +16,13 @@ const useDashboard = () => {
     setAppointmentData(data);
   }, [data]);
 
-  useEffect(() => {
-    dispatch(fetchAppointment());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchAppointment());
+  // }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(fetchUserData());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchUserData());
+  // }, [dispatch]);
 
   const patientsData = useAppSelector((state) => state.patients.patientData);
 
@@ -30,9 +30,16 @@ const useDashboard = () => {
     setPatients(patientsData);
   }, [patientsData]);
 
-  useEffect(() => {
-    dispatch(fetchPatient());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchPatient());
+  // }, [dispatch]);
+    useEffect(() => {
+      if (typeof window !== "undefined") {
+        dispatch(fetchAppointment());
+        dispatch(fetchUserData());
+        dispatch(fetchPatient());
+      }
+    }, [dispatch]);
   const totalPatients = patients.length;
 
   const filteredOfflineAppointments = appointmentData?.filter(
